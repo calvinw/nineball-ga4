@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Complete - Nineball Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Only load GA4 in production -->
+    <script>
+        // Check if this is your production domain
+        if (window.location.hostname === 'calvinw.github.io') {
+            // Load GA4 script
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-RN4WWVXY5S';
+            document.head.appendChild(script);
+            
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-RN4WWVXY5S');
+        }
+    </script>
+
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-md">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-blue-600">Nineball Online</h1>
+                </div>
+                <div class="flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                    <a href="products.html" class="text-gray-700 hover:text-blue-600 font-medium">Products</a>
+                    <a href="cart.html" class="text-gray-700 hover:text-blue-600 font-medium">Cart (<span id="cart-count">0</span>)</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Success Icon -->
+            <div class="mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
+                    <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Thank You Message -->
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Thank You for Your Order!</h2>
+            <p class="text-xl text-gray-600 mb-8">Your demo order has been successfully processed.</p>
+
+            <!-- Order Details -->
+            <div class="bg-white rounded-lg shadow-md p-8 mb-8 max-w-2xl mx-auto">
+                <h3 class="text-2xl font-semibold mb-4">Order Summary</h3>
+                <div class="border-t border-gray-200 pt-4">
+                    <div id="order-items" class="space-y-4 mb-6">
+                        <!-- Order items will be populated by JavaScript -->
+                    </div>
+                    <div class="border-t pt-4">
+                        <div class="flex justify-between items-center text-xl font-bold">
+                            <span>Total:</span>
+                            <span id="order-total" class="text-green-600">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Demo Notice -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
+                    <div class="flex items-center justify-center">
+                        <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-blue-600 text-sm">This was a demo transaction - no real payment was processed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="index.html" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                    Return to Home
+                </a>
+                <a href="products.html" class="bg-gray-200 text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition duration-300">
+                    Continue Shopping
+                </a>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="mt-12 text-gray-500">
+                <p class="mb-2">This page demonstrates GA4 purchase event tracking.</p>
+                <p>Check your GA4 Real-time reports to see the completed purchase event.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 Nineball Online - GA4 Demo Store</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Display order summary on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            displayOrderSummary();
+        });
+
+        function displayOrderSummary() {
+            // Get order data from URL parameters or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderData = urlParams.get('order');
+            
+            if (orderData) {
+                try {
+                    const order = JSON.parse(decodeURIComponent(orderData));
+                    showOrderDetails(order.items, order.total);
+                } catch (e) {
+                    // Fallback to showing generic success message
+                    showGenericSuccess();
+                }
+            } else {
+                showGenericSuccess();
+            }
+        }
+
+        function showOrderDetails(items, total) {
+            const orderItems = document.getElementById('order-items');
+            const orderTotal = document.getElementById('order-total');
+            
+            orderItems.innerHTML = '';
+            
+            items.forEach(item => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'flex justify-between items-center';
+                orderItem.innerHTML = `
+                    <span>${item.name} × ${item.quantity}</span>
+                    <span class="font-semibold">$${(item.price * item.quantity).toFixed(2)}</span>
+                `;
+                orderItems.appendChild(orderItem);
+            });
+            
+            orderTotal.textContent = `$${total.toFixed(2)}`;
+        }
+
+        function showGenericSuccess() {
+            const orderItems = document.getElementById('order-items');
+            const orderTotal = document.getElementById('order-total');
+            
+            orderItems.innerHTML = '<p class="text-gray-600">Order details not available</p>';
+            orderTotal.textContent = 'Demo Order';
+        }
+    </script>
+</body>
+</html>

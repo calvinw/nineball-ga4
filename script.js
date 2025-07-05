@@ -327,17 +327,30 @@ function completeOrder() {
     // Track purchase event
     trackPurchase(transactionId, items, total);
     
+    // Prepare order data for thank you page
+    const orderData = {
+        transactionId: transactionId,
+        items: cart.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity
+        })),
+        total: total
+    };
+    
     // Clear cart
     cart = [];
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
     
-    // Show success message and redirect
+    // Show success message and redirect to thank you page
     showNotification('Order completed successfully!');
     
     setTimeout(() => {
-        window.location.href = 'index.html';
-    }, 2000);
+        // Redirect to thank you page with order data
+        const orderParam = encodeURIComponent(JSON.stringify(orderData));
+        window.location.href = `thank-you.html?order=${orderParam}`;
+    }, 1500);
 }
 
 function showNotification(message) {
