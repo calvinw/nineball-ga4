@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: nineball-ga4
+Version: 0.1.0
+Summary: GA4 data extraction and analysis for ecommerce demo site
+Author-email: Calvin W <calvinw@example.com>
+License: MIT
+Requires-Python: <3.13,>=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: google-analytics-data>=0.18.0
+Requires-Dist: google-auth>=2.0.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: python-dotenv>=1.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+
+# nineball-ga4
+Practice site for GA4
